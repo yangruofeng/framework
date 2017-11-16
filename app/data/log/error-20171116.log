@@ -1,0 +1,48 @@
+--171116 173952: [2017-11-16 17:39:52] /_sl/framework/app/api/v1/upload.file.php ( _c=file&_m=uploadFile ) 
+{"img":{"name":"load10.gif","type":"application\/octet-stream","tmp_name":"C:\\Windows\\phpBD10.tmp","error":0,"size":52550}}
+
+--171116 174027: [2017-11-16 17:40:27] /_sl/framework/app/api/v1/upload.file.php ( _c=file&_m=uploadFile ) 
+{"img":{"name":"load10.gif","type":"application\/octet-stream","tmp_name":"C:\\Windows\\php46BA.tmp","error":0,"size":52550}}
+
+--171116 174048: [2017-11-16 17:40:48] /_sl/framework/app/api/v1/upload.file.php ( _c=file&_m=uploadFile ) 
+{"img":{"name":"load10.gif","type":"application\/octet-stream","tmp_name":"C:\\Windows\\php9556.tmp","error":0,"size":52550}}
+
+--171116 174050: [2017-11-16 17:40:50] /_sl/framework/app/api/v1/upload.file.php ( _c=file&_m=uploadFile ) 
+{"img":{"name":"load10.gif","type":"application\/octet-stream","tmp_name":"C:\\Windows\\php9FFF.tmp","error":0,"size":52550}}
+
+--171116 174329: [2017-11-16 17:43:29] /_sl/framework/app/api/v1/upload.file.php ( _c=file&_m=uploadFile ) 
+[]
+
+--171116 174339: [2017-11-16 17:43:39] /_sl/framework/app/api/v1/upload.file.php ( _c=file&_m=uploadFile ) 
+[]
+
+--171116 174428: [2017-11-16 17:44:28] /_sl/framework/app/api/v1/upload.file.php ( _c=file&_m=uploadFile ) 
+[]
+
+--171116 174434: [2017-11-16 17:44:34] /_sl/framework/app/api/v1/upload.file.php ( _c=file&_m=uploadFile ) 
+[]
+
+--171116 174436: [2017-11-16 17:44:36] /_sl/framework/app/api/v1/upload.file.php ( _c=file&_m=uploadFile ) 
+[]
+
+--171116 174437: [2017-11-16 17:44:37] /_sl/framework/app/api/v1/upload.file.php ( _c=file&_m=uploadFile ) 
+[]
+
+--171116 174455: [2017-11-16 17:44:55] /_sl/framework/app/api/v1/upload.file.php ( _c=file&_m=uploadFile ) 
+{"img":{"name":"load10.gif","type":"application\/octet-stream","tmp_name":"C:\\Windows\\php5C1F.tmp","error":0,"size":52550}}
+
+--171116 174456: [2017-11-16 17:44:56] /_sl/framework/app/api/v1/upload.file.php ( _c=file&_m=uploadFile ) 
+{"img":{"name":"load10.gif","type":"application\/octet-stream","tmp_name":"C:\\Windows\\php6092.tmp","error":0,"size":52550}}
+
+--171116 174921: [2017-11-16 17:49:21] /_sl/framework/app/api/v1/upload.file.php ( _c=file&_m=uploadFile ) 
+{"img":{"name":"load10.gif","type":"application\/octet-stream","tmp_name":"C:\\Windows\\php6956.tmp","error":0,"size":52550}}
+
+--171116 175220: [2017-11-16 17:52:20] /_sl/framework/app/api/v1/upload.file.php ( _c=file&_m=uploadFile ) 
+{"STS":false,"MSG":"Move upload file fail.","DATA":null,"ERROR_NO":0}
+
+--171116 175334: [2017-11-16 17:53:34] /_sl/framework/app/api/v1/upload.file.php ( _c=file&_m=uploadFile ) 
+{"img":{"name":"load10.gif","type":"application\/octet-stream","tmp_name":"C:\\Windows\\php47B2.tmp","error":0,"size":52550}}
+
+--171116 180313: [2017-11-16 18:03:13] /_sl/framework/app/api/v1/upload.file.php ( _c=file&_m=uploadFile ) 
+{"STS":false,"MSG":"Move upload file fail.","DATA":null,"ERROR_NO":0}
+

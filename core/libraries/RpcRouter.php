@@ -57,6 +57,7 @@ class RpcRouter
 
         $ctrl=(($param['_c']?:$param['_cls'])?:$param['class'])?:$param['act'];
         $ctrl=$ctrl?:$param['_api'];
+        $ctrl = $ctrl?:'index';
         $opt=($param['_m']?:$param['_a']?:$param['method'])?:$param['op'];
         $opt=$opt?:$param['_opt'];
         $data=($param['_p']?:$param['data'])?:$param['param'];
@@ -71,7 +72,7 @@ class RpcRouter
         }
 
         try{
-            @include_once(APP_PATH . "/control/" . $ctrl . ".php");
+            @include_once(SUB_APP_ROOT . "/control/" . $ctrl . ".php");
             ob_start();
             $obj=new $class;
             $rt=$obj->$method($data);
@@ -91,7 +92,7 @@ class RpcRouter
             if (!$rt['STS']) {
                 $now = @date('Y-m-d H:i:s',time());
                 $url = $_SERVER['REQUEST_URI'] ? $_SERVER['REQUEST_URI'] : $_SERVER['PHP_SELF'];
-                $url .= " ( act={$_GET['act']}&op={$_GET['op']} ) ";
+                $url .= " ( _c={$_GET['_c']}&_m={$_GET['_m']} ) ";
                 $message = json_encode($rt);
                 logger::record("error", "[{$now}] {$url}\r\n{$message}\r\n");
             }
@@ -127,7 +128,7 @@ class RpcRouter
 
         $_s=$_GET['token_key']?:($_POST['token_key']?:$_COOKIE['PHPSESSID']);
         if(!$_s){
-            Str::quickRandom(8);
+            $_s = Str::quickRandom(8);
         }
         session_id($_s);
         session_start();

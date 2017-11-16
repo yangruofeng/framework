@@ -247,10 +247,10 @@ class Str
      * @param  int     $count
      * @return string
      */
-    public static function plural($value, $count = 2)
+    /*public static function plural($value, $count = 2)
     {
         return Pluralizer::plural($value, $count);
-    }
+    }*/
 
     /**
      * Generate a more truly "random" alpha-numeric string.
@@ -395,10 +395,11 @@ class Str
      * @param  string  $value
      * @return string
      */
-    public static function singular($value)
+    /*public static function singular($value)
     {
+
         return Pluralizer::singular($value);
-    }
+    }*/
 
     /**
      * Generate a URL friendly "slug" from a given string.

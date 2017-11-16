@@ -79,6 +79,11 @@ class ClassLoader
                 return $file;
             }
 
+            $file = SUB_APP_ROOT.'/control/'.substr($class,0,-strlen('control')).$ext;
+            if( file_exists($file)){
+                return $file;
+            }
+
         }
 
         $class_map = array(
@@ -89,6 +94,7 @@ class ClassLoader
             APP_PATH.'/class',
             APP_PATH.'/model',
             APP_PATH.'/control',
+            SUB_APP_ROOT.'/control'
         );
         foreach( $class_map as $path ){
             $file = $path.'/'.$class.$ext;
