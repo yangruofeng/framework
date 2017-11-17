@@ -60,6 +60,8 @@ GLOBAL $config;
 
 require_once(BASE_CORE_PATH . "/libraries/ormYo.php");
 require_once(BASE_CORE_PATH . "/libraries/Yo.php");
+require_once BASE_CORE_PATH.'/libraries/defineEnum.php';
+
 $dsn = $GLOBALS['config']['db_conf'];
 ormYo::setup($dsn);
 ormYo::$default_db_key = "db_default";

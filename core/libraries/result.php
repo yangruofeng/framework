@@ -26,7 +26,7 @@ class result
             'STS' => $this->STS,
             'MSG' => $this->MSG,
             'DATA' => $this->DATA,
-            'ERR_NO' => $this->ERROR_NO
+            'ERROR_NO' => $this->ERROR_NO
         );
     }
 }

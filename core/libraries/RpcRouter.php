@@ -20,20 +20,10 @@ class RpcRouter
 		return;
 	}
 
-	public static function _log_($log_type,$content){
-		if(is_object($content) || is_array($content)){
-			$content=json_encode($content);
-		}	 
-		$rt="";
-		if(!defined('_LOG_')){ throw new Exception("//_LOG_ not defined to call logger"); }
-		$suffix="\n";//for all
-		$rt=_LOG_ .'/'.$log_type."-".date('Ymd').".log";
-		file_put_contents($rt, $content.$suffix, FILE_APPEND);
-		return $rt;
-	}
 
     public static function parse_conf(&$setting_config){
         $it_config=$GLOBALS['config'];
+        // todo 增加额外的配置，比如数据库
         $setting_config = $it_config;
     }
 
@@ -44,7 +34,7 @@ class RpcRouter
 
     public static function handle($_p = array()){
         self::startSession();
-        $param=array_merge(array(), $_GET, $_POST); //按道理只要request就能取到所有参数了。好像说可能存在配置问题。
+        $param=array_merge(array(), $_GET, $_POST);
         $php_input = file_get_contents('php://input');
         if($php_input && !$GLOBALS['HTTP_RAW_POST_DATA']) $GLOBALS['HTTP_RAW_POST_DATA']=$php_input;//store for later usage if needed
         if($php_input){
@@ -85,7 +75,9 @@ class RpcRouter
         if(is_array($rt) || is_object($rt)){
             ob_get_clean();
             //$rt['debug_trace']=Tpl::showTrace();
+
             if(is_object($rt)){
+
                 $rt=obj2array($rt,true);
             }
 

@@ -29,3 +29,4 @@ $config = array(
 );
 
 $config['debug']=true;
+$config['SERVER_TIMEZONE'] = 'Asia/Shanghai';

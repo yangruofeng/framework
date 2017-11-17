@@ -6,19 +6,34 @@
  * Time: 15:10
  */
 
-function my_error_handler($err_no,$err_str,$err_file,$err_line)
+function global_error_handler($err_no,$err_str,$err_file,$err_line)
 {
+    $return = array(
+        'errno' => $err_no,
+        'errstr' => $err_str,
+        'file' => $err_file,
+        'line' => $err_line
+    );
     if( $err_no != E_NOTICE && $err_no != E_USER_NOTICE ){
-        echo json_encode(array(
-            'errno' => $err_no,
-            'errstr' => $err_str,
-            'file' => $err_file,
-            'line' => $err_line
-        ));
+        echo json_encode($return);
     }
+    return $return;
 }
 
-set_error_handler('my_error_handler');
+set_error_handler('global_error_handler');
+
+function global_exception_handler(Exception $e)
+{
+    echo json_encode(array(
+        'errno' => $e->getCode(),
+        'errstr' => $e->getMessage(),
+        'file' => $e->getFile(),
+        'line' => $e->getLine(),
+        'trace' => $e->getTraceAsString()
+    ));
+}
+
+set_exception_handler('global_exception_handler');
 
 function C($key, $value = null)
 {
@@ -51,17 +66,15 @@ function getConf($key)
 
 
 function obj2array($obj,$is_deep=true){
-    if( !is_object($obj) ){
-        throw new Exception('function abj2array require parameter 1 to be a object.');
+
+    $obj = is_object($obj)?get_object_vars($obj): $obj;
+    if( is_array($obj) ){
+        foreach( $obj as $k=> $v ){
+            $obj[$k] = obj2array($v);
+        }
     }
-    $vars = get_object_vars($obj) ;
-    $arr = array();
-    foreach ($vars as $k => $v){
-        if(is_numeric(stripos($k,'parent_obj'))) continue;
-        $new_v = $is_deep&&(is_array($v) || is_object($v)) ? obj2array($v) : $v;
-        $arr[$k] = $new_v;
-    }
-    return $arr;
+    return $obj;
+
 }
 function array2obj($arr, $obj,$create=false) {
     $vars=get_class_vars(get_class($obj));
@@ -76,6 +89,64 @@ function array2obj($arr, $obj,$create=false) {
             }
         }
     }
+}
+
+function array_to_object($arr)
+{
+    $arr = (array) $arr;
+    foreach( $arr as $k=>$v ){
+        if( gettype($v) == 'array' || gettype($v) == 'object' ){
+            $arr[$k] = (object) array_to_object($v);
+        }
+    }
+    return (object) $arr;
+}
+
+function my_json_decode($json,$flag=true)
+{
+    return json_decode($json,$flag);
+}
+
+function adjust_timezone(){
+    $SERVER_TIMEZONE=getConf('SERVER_TIMEZONE');
+    if($SERVER_TIMEZONE==''){
+        throw new Exception("SERVER_TIMEZONE must be config");
+    }else{
+        $ini_get_date_timezone=ini_get("date.timezone");
+        if($SERVER_TIMEZONE!= $ini_get_date_timezone ){
+            @ini_set("date.timezone",$SERVER_TIMEZONE);
+            //date_default_timezone_set($SERVER_TIMEZONE);
+        }
+    }
+}
+
+function debug(){
+    $debug=getConf("debug");
+    if(!$debug) return false;
+    $log_type = '';
+    $prefix = '';
+    $log_content = '';
+    $arr=func_get_args();
+    if(!count($arr)) return false;
+    if(count($arr)==1) $log_content=$arr[0];
+    if(count($arr)==2) {$log_type=$arr[0];$log_content=$arr[1];}
+    if(count($arr)==3) {$log_type=$arr[0];$log_content=$arr[1];$prefix=$arr[2];}
+
+    $trace = debug_backtrace(false);
+    $class = $trace[1]['class'];
+    $function = $trace[1]['function'];
+
+    if(!$log_type){
+        $log_type=$class."-".$function;
+    }
+    if($prefix!="")
+        $prefix.=":";
+    if (is_array($log_content) || is_object($log_content))
+        $log_content = $prefix.json_encode($log_content);
+    else{
+        $log_content = $prefix.$log_content;
+    }
+    return logger::record($log_type,$log_content);
 }
 
 // 判断是否手机浏览器
@@ -116,7 +187,52 @@ function is_mobile_brower()
     return false;
 }
 
-function my_json_decode($json,$flag=true)
+function compareFloat($a, $b, $esp = 0.000001)
 {
-    return json_decode($json,$flag);
+    if (abs($a - $b) < $esp) {
+        return true;
+    }
+    return false;
 }
+
+function getClientIp()
+{
+    if (@$_SERVER['HTTP_CLIENT_IP'] && $_SERVER['HTTP_CLIENT_IP'] != 'unknown') {
+        $ip = $_SERVER['HTTP_CLIENT_IP'];
+    } elseif (@$_SERVER['HTTP_X_FORWARDED_FOR'] && $_SERVER['HTTP_X_FORWARDED_FOR'] != 'unknown') {
+        $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+    } else {
+        $ip = $_SERVER['REMOTE_ADDR'];
+    }
+    return preg_match('/^\d[\d.]+\d$/', $ip) ? $ip : '';
+}
+
+function Now()
+{
+    return date('Y-m-d H:i:s');
+}
+
+function getReferer()
+{
+    return empty($_SERVER['HTTP_REFERER']) ? '' : $_SERVER['HTTP_REFERER'];
+}
+
+function request_uri()
+{
+
+    $http_type = ($_SERVER['HTTPS']?'https':$_SERVER['REQUEST_SCHEME'])?:'http';
+    $host = $_SERVER['SERVER_NAME']?:$_SERVER['HTTP_HOST'];
+    $port = $_SERVER['SERVER_PORT'];
+    //$script = $_SERVER['PHP_SELF'];  // /ss/index.php
+    //$query = $_SERVER['QUERY_STRING'];
+    $uri = $_SERVER['REQUEST_URI'];
+    if( $port == 80 ){
+        return $http_type.'://'. $host . $uri;
+    }else{
+        return $http_type.'://'. $host . ':'. $port . $uri;
+    }
+
+
+}
+
+

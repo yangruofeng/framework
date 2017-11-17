@@ -12,9 +12,11 @@ class indexControl extends control
     public function indexOp()
     {
 
+
+
         //$m = new countryModel();
         //print_r($m->find(1));
-        Tpl::output('title','Hello,word!');
+        Tpl::output('title','Test');
         Tpl::setLayout('default_layout');
         Tpl::show('index');
 
