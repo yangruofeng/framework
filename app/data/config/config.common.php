@@ -30,3 +30,9 @@ $config = array(
 
 $config['debug']=true;
 $config['SERVER_TIMEZONE'] = 'Asia/Shanghai';
+
+$config['default_language'] = 'en';
+$config['languages'] = array(
+    'en' => 'English',
+    'zh-cn' => '中文',
+);
