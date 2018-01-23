@@ -34,25 +34,45 @@ class indexControl extends control
         print_r($rt['data']);
     }
 
+    public function curl_post($url, $post_data)
+    {
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+        curl_setopt($ch, CURLOPT_SAFE_UPLOAD, false);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_TIMEOUT,30);//超时时间s
+
+        $output = curl_exec($ch);
+        curl_close($ch);
+        return $output;
+    }
+
     public function api_upload_imgOp()
     {
 
-        //$url = 'http://localhost/microbank/microbank/api/v1/member.cert.id.php';
+        $url = 'http://localhost/microbank/microbank/api/v1/member.cert.id.php';
+        //$url = 'http://192.168.0.103/microbank/microbank/wap/index.php?act=credit&op=uploadCertID';
         $url = 'http://bank.mekong24.com/microbank/api/v1/member.cert.id.php';
         $img = APP_RESOURCE_PATH.'/images/load10.gif';
+
         $hand = APP_RESOURCE_PATH.'/images/hand.jpg';
         $front = APP_RESOURCE_PATH.'/images/front.jpg';
         $back = APP_RESOURCE_PATH.'/images/back.jpg';
         $data = array(
-            'member_id' => 7,
-            'token' => '3b541b92a7f725a5ca45c956cd7277bb',
+            'member_id' => 24,
+            'token' => 'de94a056e070999f273a4d918c40048d',
             'hand_photo' => new CURLFile($hand),
             'front_photo' => new CURLFile($front),
             'back_photo' => new CURLFile($back),
         );
-        $rt = http::http_request('http','post',$url,$data);
 
-        print_r($rt);die;
+        //$rt = http::http_request('http','post',$url,$data);
+        $rt = $this->curl_post($url,$data);
+        print_r(json_decode($rt,true));die;
     }
 
     public function family_book_certOp()
